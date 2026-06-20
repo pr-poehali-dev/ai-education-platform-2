@@ -15,7 +15,7 @@ export const SITE = {
   links: {
     // Ссылка на твою соцсеть для оплаты доступа
     // Пример: 'https://vk.com/твой_профиль' или 'https://t.me/твой_ник'
-    socialPayment: 'https://ВСТАВЬ_СЮДА_ССЫЛКУ_НА_СОЦСЕТЬ',
+    socialPayment: 'https://vk.com/artista22',
 
     // Куда ведёт кнопка «Начать бесплатно»
     startFree: '#courses',
