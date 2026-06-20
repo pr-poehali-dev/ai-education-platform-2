@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { SITE } from '@/site.config';
+import { useAuth } from '@/hooks/useAuth';
+import LoginModal from '@/components/LoginModal';
 
 const floaters = [
   { symbol: '🍬', style: 'top-[10%] left-[5%] text-3xl opacity-40 animate-float', delay: '0s' },
@@ -15,10 +17,13 @@ const floaters = [
 
 const Index = () => {
   const [chat, setChat] = useState('');
+  const [showLogin, setShowLogin] = useState(false);
   const navigate = useNavigate();
+  const { session, isOwner, logout } = useAuth();
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+      {showLogin && <LoginModal onClose={() => setShowLogin(false)} onSuccess={() => setShowLogin(false)} />}
 
       {/* NAV */}
       <header className="sticky top-0 z-50 backdrop-blur-md bg-background/70 border-b border-border">
@@ -34,7 +39,21 @@ const Index = () => {
               </a>
             ))}
           </div>
-          <Button className="rounded-full">Войти</Button>
+          {session ? (
+            <div className="flex items-center gap-2">
+              {isOwner && (
+                <span className="text-xs font-semibold bg-primary text-primary-foreground px-3 py-1 rounded-full">
+                  👑 Владелец
+                </span>
+              )}
+              <span className="text-sm text-muted-foreground hidden md:block">{session.label}</span>
+              <Button variant="outline" size="sm" className="rounded-full" onClick={logout}>
+                Выйти
+              </Button>
+            </div>
+          ) : (
+            <Button className="rounded-full" onClick={() => setShowLogin(true)}>Войти 🍒</Button>
+          )}
         </nav>
       </header>
 

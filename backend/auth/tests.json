@@ -1,0 +1,19 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Неверный код",
+      "method": "POST",
+      "path": "/login",
+      "body": {"code": "неверный-код-123"},
+      "expectedStatus": 401,
+      "expectedBody": {"error": "Неверный код доступа"},
+      "bodyMatcher": "partial"
+    }
+  ]
+}

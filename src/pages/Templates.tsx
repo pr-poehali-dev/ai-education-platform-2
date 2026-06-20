@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
 import { SITE } from '@/site.config';
+import { useAuth } from '@/hooks/useAuth';
+import LoginModal from '@/components/LoginModal';
 
 // ============================================================
 // Платформер — простая рабочая игра на Canvas
@@ -224,7 +226,7 @@ const CHAT_TIPS = [
   'Как сделать звук при прыжке?',
 ];
 
-function AiChat({ locked }: { locked: boolean }) {
+function AiChat({ locked, onLoginClick }: { locked: boolean; onLoginClick?: () => void }) {
   const [messages, setMessages] = useState([
     { from: 'bot', text: 'Привет! 🍬 Я помогу тебе доработать платформер. Спроси что угодно о коде игры!' }
   ]);
@@ -303,11 +305,16 @@ function AiChat({ locked }: { locked: boolean }) {
           <div className="text-4xl">🍒</div>
           <p className="font-display font-bold text-xl">Чат с ИИ — по подписке</p>
           <p className="text-muted-foreground text-sm max-w-xs">
-            Игру можно потрогать бесплатно. Чтобы общаться с AI-наставником и дорабатывать код — нужна подписка.
+            Игру можно потрогать бесплатно. Чтобы общаться с AI-наставником — войди или оформи подписку.
           </p>
-          <a href={SITE.links.socialPayment} target="_blank" rel="noopener noreferrer">
-            <Button className="rounded-full">🍬 Оформить доступ</Button>
-          </a>
+          <div className="flex flex-col gap-2 w-full max-w-[200px]">
+            <Button className="rounded-full w-full" onClick={onLoginClick}>
+              🍬 Войти с кодом
+            </Button>
+            <a href={SITE.links.socialPayment} target="_blank" rel="noopener noreferrer">
+              <Button variant="outline" className="rounded-full w-full text-xs">Получить доступ 🍒</Button>
+            </a>
+          </div>
         </div>
       )}
     </div>
@@ -320,11 +327,12 @@ function AiChat({ locked }: { locked: boolean }) {
 
 export default function Templates() {
   const navigate = useNavigate();
-  // false = без подписки (превью), true = есть подписка
-  const [hasSubscription] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const { session, isOwner, hasAccess, logout } = useAuth();
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {showLogin && <LoginModal onClose={() => setShowLogin(false)} onSuccess={() => setShowLogin(false)} />}
 
       {/* NAV */}
       <header className="sticky top-0 z-50 backdrop-blur-md bg-background/70 border-b border-border">
@@ -334,12 +342,18 @@ export default function Templates() {
             {SITE.name}
           </button>
           <div className="flex items-center gap-3">
-            {!hasSubscription && (
-              <a href={SITE.links.socialPayment} target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" size="sm" className="rounded-full text-xs">
-                  🍒 Получить подписку
-                </Button>
-              </a>
+            {session ? (
+              <div className="flex items-center gap-2">
+                {isOwner && (
+                  <span className="text-xs font-semibold bg-primary text-primary-foreground px-3 py-1 rounded-full">👑 Владелец</span>
+                )}
+                <span className="text-sm text-muted-foreground hidden md:block">{session.label}</span>
+                <Button variant="outline" size="sm" className="rounded-full" onClick={logout}>Выйти</Button>
+              </div>
+            ) : (
+              <Button size="sm" className="rounded-full text-xs" onClick={() => setShowLogin(true)}>
+                🍒 Войти
+              </Button>
             )}
             <button onClick={() => navigate('/')} className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
               <Icon name="ArrowLeft" size={15} /> На главную
@@ -375,11 +389,11 @@ export default function Templates() {
           <div className="space-y-4">
             <div className="flex items-center gap-2 mb-2">
               <span className="text-lg font-display font-bold">🫧 AI-наставник</span>
-              {!hasSubscription && (
+              {!hasAccess && (
                 <span className="text-xs bg-primary text-primary-foreground px-3 py-1 rounded-full font-semibold">Подписка</span>
               )}
             </div>
-            <AiChat locked={!hasSubscription} />
+            <AiChat locked={!hasAccess} onLoginClick={() => setShowLogin(true)} />
           </div>
         </div>
 
