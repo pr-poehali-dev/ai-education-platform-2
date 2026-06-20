@@ -1,0 +1,22 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Вопрос об игре",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "topic": "платформер",
+        "messages": [{"role": "user", "content": "Как добавить двойной прыжок?"}]
+      },
+      "expectedStatus": 200,
+      "expectedBody": {"answer": "string"},
+      "bodyMatcher": "partial"
+    }
+  ]
+}
