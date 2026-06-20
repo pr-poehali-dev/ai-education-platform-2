@@ -29,7 +29,7 @@ const Index = () => {
             <span className="grid place-items-center w-9 h-9 rounded-xl bg-primary text-primary-foreground">
               <Icon name="Sparkles" size={18} />
             </span>
-            CodeBloom
+            Bubblegum
           </a>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium">
             <a href="#courses" className="hover:text-primary transition-colors">Обучение</a>
@@ -183,9 +183,9 @@ const Index = () => {
       <footer className="border-t border-border py-8">
         <div className="container flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
           <div className="flex items-center gap-2 font-display font-bold text-foreground">
-            <Icon name="Sparkles" size={16} className="text-primary" /> CodeBloom
+            <Icon name="Sparkles" size={16} className="text-primary" /> Bubblegum
           </div>
-          <p>© 2026 CodeBloom — обучение программированию с ИИ</p>
+          <p>© 2026 Bubblegum — обучение программированию с ИИ</p>
         </div>
       </footer>
     </div>
