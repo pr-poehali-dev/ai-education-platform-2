@@ -21,7 +21,7 @@ export const SITE = {
     startFree: '#courses',
 
     // Куда ведёт кнопка «Шаблоны игр»
-    templatesButton: '#templates',
+    templatesButton: '/templates',
   },
 
   // --- ГЕРОЙ (главный экран) ---

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { SITE } from '@/site.config';
@@ -14,6 +15,7 @@ const floaters = [
 
 const Index = () => {
   const [chat, setChat] = useState('');
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
@@ -60,11 +62,9 @@ const Index = () => {
                   {SITE.hero.buttonPrimary}
                 </Button>
               </a>
-              <a href={SITE.links.templatesButton}>
-                <Button size="lg" variant="outline" className="rounded-full text-base h-12 px-7 bg-white/60">
-                  {SITE.hero.buttonSecondary}
-                </Button>
-              </a>
+              <Button size="lg" variant="outline" onClick={() => navigate(SITE.links.templatesButton)} className="rounded-full text-base h-12 px-7 bg-white/60">
+                {SITE.hero.buttonSecondary}
+              </Button>
             </div>
           </div>
           <div className="relative">
